@@ -1,8 +1,9 @@
-import { useContext, useRef, useState } from 'react';
+import { useContext, useRef, useState } from "react";
+import { motion } from "framer-motion";
 
-import { ChallengesContext } from '../store/challenges-context.jsx';
-import Modal from './Modal.jsx';
-import images from '../assets/images.js';
+import { ChallengesContext } from "../store/challenges-context.jsx";
+import Modal from "./Modal.jsx";
+import images from "../assets/images.js";
 
 export default function NewChallenge({ onDone }) {
   const title = useRef();
@@ -56,17 +57,28 @@ export default function NewChallenge({ onDone }) {
           <input ref={deadline} type="date" name="deadline" id="deadline" />
         </p>
 
-        <ul id="new-challenge-images">
+        <motion.ul
+          variants={{
+            visible: { transition: { staggerChildren: 0.05 } },
+          }}
+          id="new-challenge-images"
+        >
           {images.map((image) => (
-            <li
+            <motion.li
+              variants={{
+                hidden: { opacity: 0, y: 30, scale: 0.5 },
+                visible: { opacity: 100, y: 0, scale: 1 },
+              }}
+              transition={{ type: "spring", duration: 0.5 }}
               key={image.alt}
+              whileHover={{ scale: 1.1 }}
               onClick={() => handleSelectImage(image)}
-              className={selectedImage === image ? 'selected' : undefined}
+              className={selectedImage === image ? "selected" : undefined}
             >
               <img {...image} />
-            </li>
+            </motion.li>
           ))}
-        </ul>
+        </motion.ul>
 
         <p className="new-challenge-actions">
           <button type="button" onClick={onDone}>
